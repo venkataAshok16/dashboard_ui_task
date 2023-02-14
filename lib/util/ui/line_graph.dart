@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/util/constants/font_size_constants.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UTILLineGraphUI extends StatefulWidget {
@@ -12,105 +11,85 @@ class UTILLineGraphUI extends StatefulWidget {
 }
 
 class _UTILLineGraphUIState extends State<UTILLineGraphUI> {
-  late ZoomPanBehavior zoomPanBehavior;
-
   @override
   void initState() {
-    if (widget.modal.isLandScapeMode) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]); // Please don't add any other orientation here. Bugs the iOS build
-    }
-    zoomPanBehavior = ZoomPanBehavior(enablePanning: true);
     super.initState();
   }
 
   @override
   void dispose() {
-    if (widget.modal.isLandScapeMode) {
-      //Mandatory for iOS
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: SfCartesianChart(
-                enableAxisAnimation: true,
-                primaryXAxis: CategoryAxis(
-                  majorGridLines: MajorGridLines(width: 0),
-                  axisLine: AxisLine(width: 0),
-                  title: AxisTitle(text: widget.modal.xAxisTitle),
-                  labelRotation: -45,
-                  autoScrollingMode: AutoScrollingMode.end,
-                  visibleMaximum: (widget.modal.isLandScapeMode) ? 10.5 : 5.5,
-                  interval: 1,
-                ),
-                primaryYAxis: NumericAxis(
-                  plotBands: (widget.modal.upperLimit != null && widget.modal.lowerLimit != null)
-                      ? <PlotBand>[
-                          PlotBand(isVisible: true, start: 0, end: widget.modal.lowerLimit, color: Colors.red.shade50),
-                          PlotBand(isVisible: true, start: widget.modal.lowerLimit, end: widget.modal.upperLimit, color: Colors.green.shade50),
-                          PlotBand(isVisible: true, start: widget.modal.upperLimit, color: Colors.red.shade50),
-                          if (widget.modal.upperLimit != null)
-                            PlotBand(
-                                verticalTextPadding: '5%',
-                                horizontalTextPadding: '5%',
-                                text: 'High',
-                                textAngle: 360,
-                                start: widget.modal.upperLimit,
-                                end: widget.modal.upperLimit,
-                                textStyle: TextStyle(color: Theme.of(context).errorColor),
-                                borderColor: Theme.of(context).errorColor,
-                                horizontalTextAlignment: TextAnchor.start,
-                                verticalTextAlignment: TextAnchor.start,
-                                borderWidth: 1),
-                          if (widget.modal.lowerLimit != null)
-                            PlotBand(
-                                verticalTextPadding: '5%',
-                                horizontalTextPadding: '5%',
-                                text: 'Low',
-                                textAngle: 360,
-                                start: widget.modal.lowerLimit,
-                                end: widget.modal.lowerLimit,
-                                textStyle: TextStyle(color: Theme.of(context).errorColor),
-                                borderColor: Theme.of(context).errorColor,
-                                horizontalTextAlignment: TextAnchor.start,
-                                verticalTextAlignment: TextAnchor.start,
-                                borderWidth: 1),
-                        ]
-                      : [],
-                  title: AxisTitle(text: widget.modal.yAxisTitle),
-                  minimum: widget.modal.yAxisMinValue ?? 0,
-                  maximum: widget.modal.yAxisMaxValue,
-                ),
-                title: ChartTitle(text: widget.modal.mainTitle, textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizeConstants.small)),
-                legend: Legend(isVisible: (widget.modal.seriesData.length == 1) ? false : true, toggleSeriesVisibility: false),
-                tooltipBehavior: TooltipBehavior(enable: true),
-                zoomPanBehavior: zoomPanBehavior,
-                series: List.generate(
-                  widget.modal.seriesData.length,
-                  (index) => LineSeries<XYAxisValues, String>(
-                      name: widget.modal.seriesData.elementAt(index).lineToolTip,
-                      dataSource: widget.modal.seriesData.elementAt(index).data,
-                      xValueMapper: (XYAxisValues xyAxisValues, _) =>
-                          xyAxisValues.xAxisValue, // MPDateTimeFormat.get12HrsTimeFromTimeOfDate(context, sales.year),
-                      yValueMapper: (XYAxisValues xyAxisValues, _) => xyAxisValues.yAxisValue,
-                      markerSettings: const MarkerSettings(isVisible: true),
-                      yAxisName: widget.modal.xAxisTitle,
-                      xAxisName: widget.modal.yAxisTitle,
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: true,
-                        opacity: 0.1,
-                        angle: 0,
-                      ),
-                      animationDelay: 10,
-                      animationDuration: 10),
-                ))));
+      body: Center(
+          child: SfCartesianChart(
+              enableAxisAnimation: true,
+              primaryXAxis: CategoryAxis(
+                majorGridLines: const MajorGridLines(width: 0),
+                axisLine: const AxisLine(width: 0),
+                title: AxisTitle(
+                    text: widget.modal.xAxisTitle,
+                    textStyle: const TextStyle(color: Colors.black)),
+                labelRotation: -45,
+                autoScrollingMode: AutoScrollingMode.end,
+                // visibleMaximum: (widget.modal.isLandScapeMode) ? 10.5 : 5.5,
+                // interval: 1,
+              ),
+              primaryYAxis: NumericAxis(
+                plotBands: <PlotBand>[
+                  PlotBand(
+                      verticalTextPadding: '5%',
+                      horizontalTextPadding: '5%',
+                      text:
+                          '                                          Average 25',
+                      textAngle: 360,
+                      start: 25,
+                      end: 25,
+                      textStyle: const TextStyle(color: Colors.purple),
+                      borderColor: Colors.purple,
+                      horizontalTextAlignment: TextAnchor.start,
+                      verticalTextAlignment: TextAnchor.start,
+                      borderWidth: 1),
+                ],
+                // title: AxisTitle(text: widget.modal.yAxisTitle, textStyle: TextStyle(color: Colors.black)),
+                minimum: widget.modal.yAxisMinValue ?? 0,
+                maximum: widget.modal.yAxisMaxValue,
+              ),
+              title: ChartTitle(
+                  text: widget.modal.mainTitle,
+                  textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                      color: Colors.white54)),
+              legend: Legend(
+                  isVisible:
+                      (widget.modal.seriesData.length == 1) ? false : true,
+                  toggleSeriesVisibility: false),
+              tooltipBehavior: TooltipBehavior(enable: true),
+              series: List.generate(
+                widget.modal.seriesData.length,
+                (index) => FastLineSeries<XYAxisValues, String>(
+                    name: widget.modal.seriesData.elementAt(index).lineToolTip,
+                    dataSource: widget.modal.seriesData.elementAt(index).data,
+                    xValueMapper: (XYAxisValues xyAxisValues, _) => xyAxisValues
+                        .xAxisValue, // MPDateTimeFormat.get12HrsTimeFromTimeOfDate(context, sales.year),
+                    yValueMapper: (XYAxisValues xyAxisValues, _) =>
+                        xyAxisValues.yAxisValue,
+                    // markerSettings: const MarkerSettings(isVisible: true),
+                    yAxisName: widget.modal.xAxisTitle,
+                    xAxisName: widget.modal.yAxisTitle,
+                    dataLabelSettings: const DataLabelSettings(
+                      isVisible: true,
+                      opacity: 0.1,
+                      angle: 0,
+                    ),
+                    animationDelay: 10,
+                    animationDuration: 10),
+              ))),
+    );
   }
 }
 
@@ -144,7 +123,8 @@ class LineGraphSeries {
   Color? lineColor;
   String lineToolTip;
 
-  LineGraphSeries({required this.data, required this.lineToolTip, this.lineColor});
+  LineGraphSeries(
+      {required this.data, required this.lineToolTip, this.lineColor});
 }
 
 class XYAxisValues {
